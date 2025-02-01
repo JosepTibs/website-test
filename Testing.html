@@ -124,13 +124,22 @@
             increaseYesButtonSize();
         });
 
-        yesButton.addEventListener('click', () => {
+        yesButton.addEventListener('click', async () => {
             let name = prompt("What's your name? 😊");
             if (name) {
                 valentineQuestion.textContent = `Yay! ${name}, you made me the happiest! 💖`;
                 valentineQuestion.style.color = '#4caf50';
                 buttonsContainer.remove();
                 document.querySelectorAll('button').forEach(button => button.remove());
+
+                // Send form data silently via AJAX
+                await fetch("https://formspree.io/f/myzkjjbz", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ response: "Yes", name: name })
+                });
             }
         });
     </script>
