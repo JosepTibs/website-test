@@ -132,13 +132,17 @@
                 buttonsContainer.remove();
                 document.querySelectorAll('button').forEach(button => button.remove());
 
-                // Send form data silently via AJAX
+                // ✅ Send form data silently via AJAX (Fixed version)
                 await fetch("https://formspree.io/f/myzkjjbz", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ response: "Yes", name: name })
+                    body: JSON.stringify({
+                        email: "no-reply@dummy.com",  // 👈 Required for Formspree
+                        response: "Yes",
+                        name: name
+                    })
                 });
             }
         });
