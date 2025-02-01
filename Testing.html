@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffebee;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        h1 {
+            color: #d32f2f;
+            font-size: 2.5em;
+            transition: color 0.3s ease;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        #yesButton {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        #yesButton:hover {
+            background-color: #45a049;
+        }
+
+        #noButton {
+            background-color: #f44336;
+            color: white;
+        }
+
+        #noButton:hover {
+            background-color: #e53935;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="valentineQuestion">Will you be my Valentine?</h1>
+        <div class="buttons">
+            <button id="yesButton">Yes</button>
+            <button id="noButton">No</button>
+        </div>
+    </div>
+
+    <script>
+        const noButton = document.getElementById('noButton');
+        const yesButton = document.getElementById('yesButton');
+        const valentineQuestion = document.getElementById('valentineQuestion');
+        const buttonsContainer = document.querySelector('.buttons');
+
+        function getRandomPosition() {
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            return { x, y };
+        }
+
+        function createNewNoButton() {
+            const newNoButton = document.createElement('button');
+            newNoButton.textContent = 'No';
+            newNoButton.style.backgroundColor = '#f44336';
+            newNoButton.style.color = 'white';
+            newNoButton.style.position = 'absolute';
+            newNoButton.style.cursor = 'pointer';
+
+            const { x, y } = getRandomPosition();
+            newNoButton.style.left = `${x}px`;
+            newNoButton.style.top = `${y}px`;
+
+            newNoButton.addEventListener('mouseover', () => {
+                const { x: newX, y: newY } = getRandomPosition();
+                newNoButton.style.left = `${newX}px`;
+                newNoButton.style.top = `${newY}px`;
+                createNewNoButton();
+                increaseYesButtonSize();
+            });
+
+            document.body.appendChild(newNoButton);
+        }
+
+        function increaseYesButtonSize() {
+            const currentSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
+            yesButton.style.fontSize = `${currentSize + 2}px`;
+        }
+
+        noButton.addEventListener('mouseover', () => {
+            const { x, y } = getRandomPosition();
+            noButton.style.position = 'absolute';
+            noButton.style.left = `${x}px`;
+            noButton.style.top = `${y}px`;
+            createNewNoButton();
+            increaseYesButtonSize();
+        });
+
+        yesButton.addEventListener('click', () => {
+            let name = prompt("What's your name? 😊");
+            if (name) {
+                valentineQuestion.textContent = `Yay! ${name}, you made me the happiest! 💖`;
+                valentineQuestion.style.color = '#4caf50';
+                buttonsContainer.remove();
+                document.querySelectorAll('button').forEach(button => button.remove());
+            }
+        });
+    </script>
+</body>
+</html>
