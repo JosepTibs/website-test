@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will You Be My Valentine?</title>
@@ -29,6 +30,20 @@
             color: #d32f2f;
             font-size: 2.5em;
             transition: color 0.3s ease;
+        }
+
+        .name-input {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        input {
+            padding: 8px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
         .buttons {
@@ -69,6 +84,11 @@
 <body>
     <div class="container">
         <h1 id="valentineQuestion">Will you be my Valentine?</h1>
+        
+        <div class="name-input">
+            <input type="text" id="nameInput" placeholder="Enter your name">
+        </div>
+
         <div class="buttons">
             <button id="yesButton">Yes</button>
             <button id="noButton">No</button>
@@ -80,6 +100,7 @@
         const yesButton = document.getElementById('yesButton');
         const valentineQuestion = document.getElementById('valentineQuestion');
         const buttonsContainer = document.querySelector('.buttons');
+        const nameInput = document.getElementById('nameInput');
 
         function getRandomPosition() {
             const x = Math.random() * (window.innerWidth - 100);
@@ -125,26 +146,29 @@
         });
 
         yesButton.addEventListener('click', async () => {
-            let name = prompt("What's your name? 😊");
-            if (name) {
-                valentineQuestion.textContent = `Yay! ${name}, you made me the happiest! 💖`;
-                valentineQuestion.style.color = '#4caf50';
-                buttonsContainer.remove();
-                document.querySelectorAll('button').forEach(button => button.remove());
-
-                // ✅ Send form data silently via AJAX (Fixed version)
-                await fetch("https://formspree.io/f/myzkjjbz", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        email: "no-reply@dummy.com",  // 👈 Required for Formspree
-                        response: "Yes",
-                        name: name
-                    })
-                });
+            let name = nameInput.value.trim();
+            if (name === "") {
+                alert("Please enter your name first! 😊");
+                return;
             }
+
+            valentineQuestion.textContent = `Thank you, ${name}`;
+            valentineQuestion.style.color = '#4caf50';
+            buttonsContainer.remove();
+            document.querySelectorAll('button').forEach(button => button.remove());
+
+            // ✅ Silent submission via AJAX
+            await fetch("https://formspree.io/f/myzkjjbz", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: "no-reply@dummy.com",  // Required for Formspree
+                    response: "Yes",
+                    name: name
+                })
+            });
         });
     </script>
 </body>
