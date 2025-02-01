@@ -145,12 +145,7 @@
             increaseYesButtonSize();
         });
 
-        yesButton.addEventListener('click', async () => {
-            let name = nameInput.value.trim();
-            if (name === "") {
-                alert("Please enter your name first! 😊");
-                return;
-            }
+
 
             valentineQuestion.textContent = `Thank you, ${name}`;
             valentineQuestion.style.color = '#4caf50';
