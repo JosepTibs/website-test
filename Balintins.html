@@ -75,17 +75,11 @@
         </div>
     </div>
 
-    <!-- Hidden form for Formspree -->
-    <form id="valentineForm" action="https://formspree.io/f/myzkjjbz" method="POST" style="display: none;">
-        <input type="hidden" name="response" value="Yes">
-    </form>
-
     <script>
         const noButton = document.getElementById('noButton');
         const yesButton = document.getElementById('yesButton');
         const valentineQuestion = document.getElementById('valentineQuestion');
         const buttonsContainer = document.querySelector('.buttons');
-        const valentineForm = document.getElementById('valentineForm');
 
         // Function to generate random position within the window
         function getRandomPosition() {
@@ -138,11 +132,27 @@
 
         // Event listener for the "Yes" button
         yesButton.addEventListener('click', () => {
-            // Submit the form to Formspree
-            valentineForm.submit();
+            // Submit the form data to Formspree using fetch
+            fetch('https://formspree.io/f/myzkjjbz, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ response: 'Yes' }),
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Form submitted successfully!');
+                } else {
+                    console.error('Form submission failed.');
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+            });
 
             // Change the text and color of the heading
-            valentineQuestion.textContent = 'Yay! You made me the happiest! 💖';
+            valentineQuestion.textContent = 'Yay! You made me the happiest!';
             valentineQuestion.style.color = '#4caf50';
 
             // Remove all buttons
