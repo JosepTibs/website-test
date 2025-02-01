@@ -86,7 +86,9 @@
         <h1 id="valentineQuestion">Will you be my Valentine?</h1>
         
         <div class="name-input">
-            <input type="text" id="nameInput" placeholder="Enter your name">
+           <!-- Input field for name -->
+<input type="text" id="nameInput" placeholder="Enter your name" required>
+<p id="warningMessage" style="color: red; display: none;">Please enter your name first</p>
         </div>
 
         <div class="buttons">
@@ -146,25 +148,37 @@
         });
 
 
+yesButton.addEventListener('click', async () => {
+    let name = nameInput.value.trim();
+    let warningMessage = document.getElementById("warningMessage");
 
-            valentineQuestion.textContent = `Thank you, ${name}`;
-            valentineQuestion.style.color = '#4caf50';
-            buttonsContainer.remove();
-            document.querySelectorAll('button').forEach(button => button.remove());
+    if (name === "") {
+        warningMessage.style.display = "block"; // Show warning text
+        return;
+    }
 
-            // ✅ Silent submission via AJAX
-            await fetch("https://formspree.io/f/myzkjjbz", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email: "no-reply@dummy.com",  // Required for Formspree
-                    response: "Yes",
-                    name: name
-                })
-            });
-        });
+    valentineQuestion.textContent = `Yay! ${name}, you made me the happiest! 💖`;
+    valentineQuestion.style.color = '#4caf50';
+
+    // Remove input field and buttons
+    nameInput.remove();
+    warningMessage.remove();
+    buttonsContainer.remove();
+    document.querySelectorAll('button').forEach(button => button.remove());
+
+    // ✅ Silent submission via AJAX
+    await fetch("https://formspree.io/f/myzkjjbz", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email: "no-reply@dummy.com",  // Required for Formspree
+            response: "Yes",
+            name: name
+        })
+    });
+});
     </script>
 </body>
 </html>
